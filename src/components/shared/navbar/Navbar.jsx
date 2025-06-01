@@ -1,11 +1,12 @@
 import { FaPhoneAlt, FaShoppingCart, FaUser } from "react-icons/fa";
 import { IoIosMail } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
 
    const links = (<>
-  <h2 className="flex items-center gap-2"><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf18d8f810.png" alt="" />fish & seafood</h2>
-  <h2 className="flex items-center gap-2"><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf552cd4ed.png" alt="" />Steaks fillets</h2>
+  <Link to="/fish&seafoods" className="flex items-center gap-2"><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf18d8f810.png" alt="" />fish & seafood</Link>
+  <Link to="/steaks/fillets" className="flex items-center gap-2"><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf552cd4ed.png" alt="" />Steaks fillets</Link>
   <h2 className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf552c6fc6.png" alt="" />chicken & Duck</h2>
   <h2 className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf55295a87.png" alt="" />Beef & Mutton</h2>
   <h2 className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf55288919.png" alt="" />Combo Pack</h2>
@@ -27,7 +28,7 @@ const Navbar = () => {
             </div>
 
             <div className="flex justify-between items-center gap-4 mt-10">
-                <div><img className="h-20 w-20" src="https://api.freshtoday.com.bd/media/662352c69f04c.png" alt="" /></div>
+                <Link><img className="h-20 w-20" src="https://api.freshtoday.com.bd/media/662352c69f04c.png" alt="" /></Link>
     <div className="flex w-[70%]">
       <div className="relative flex-grow">
         <input
