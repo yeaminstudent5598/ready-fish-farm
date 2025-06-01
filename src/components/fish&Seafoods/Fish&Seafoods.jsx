@@ -66,7 +66,6 @@ const FishAndSeafoods = () => {
       price: "BDT 464 /0.5kg",
       discount: "7%",
     },
-    // More products can be added here
   ];
 
   return (
@@ -80,6 +79,12 @@ const FishAndSeafoods = () => {
             className="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
           >
             <div className="relative">
+              {/* Discount Badge */}
+              {product.discount && (
+                <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                  -{product.discount}
+                </span>
+              )}
               <img
                 src={product.imgSrc}
                 alt={product.title}
@@ -90,15 +95,22 @@ const FishAndSeafoods = () => {
               <p className="text-lg font-semibold text-gray-800 mb-2">{product.title}</p>
               <div className="flex items-center justify-between">
                 <div className="text-xl font-bold text-green-600">{product.price}</div>
-                <div className="text-sm line-through text-gray-500">{product.oldPrice}</div>
+                {product.oldPrice && (
+                  <div className="text-sm line-through text-gray-500">{product.oldPrice}</div>
+                )}
               </div>
-              <div className="text-sm text-red-600 font-semibold mt-2">-{product.discount}</div>
+              {/* Display Discount */}
+              {product.discount && (
+                <div className="text-sm text-red-600 font-semibold mt-2">-{product.discount}</div>
+              )}
             </div>
           </a>
         ))}
       </div>
       <div className="text-center mt-8">
-        <button className="btn rounded-xl bg-green-600 text-white py-2 px-6 hover:bg-green-700 transition-all duration-300">Load More</button>
+        <button className="btn rounded-xl bg-green-600 text-white py-2 px-6 hover:bg-green-700 transition-all duration-300">
+          Load More
+        </button>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ const Navbar = () => {
    const links = (<>
   <Link to="/fish&seafoods" className="flex items-center gap-2"><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf18d8f810.png" alt="" />fish & seafood</Link>
   <Link to="/steaks/fillets" className="flex items-center gap-2"><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf552cd4ed.png" alt="" />Steaks fillets</Link>
-  <h2 className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf552c6fc6.png" alt="" />chicken & Duck</h2>
+  <Link to="/chickenAndDuck" className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf552c6fc6.png" alt="" />chicken & Duck</Link>
   <h2 className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf55295a87.png" alt="" />Beef & Mutton</h2>
   <h2 className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf55288919.png" alt="" />Combo Pack</h2>
   <h2 className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf55259813.png" alt="" />Dried Fish</h2>

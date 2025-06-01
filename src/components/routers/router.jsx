@@ -6,6 +6,7 @@ import MainLayout from "../mainLayout/MainLayout";
 import Home from "../home/Home";
 import FishAndSeafoods from "../fish&Seafoods/Fish&Seafoods";
 import SteaksFillets from "../steaksFillets/SteaksFillets";
+import ChickenAndDuck from "../chicken&Duck/ChickenAndDuck";
 
 
 const router = createBrowserRouter([
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/steaks/fillets",
         element: <SteaksFillets/>
+      },
+      {
+        path: "/chickenAndDuck",
+        element: <ChickenAndDuck/>
       }
     ]
   },
