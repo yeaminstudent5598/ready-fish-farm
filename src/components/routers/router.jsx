@@ -4,6 +4,8 @@ import {
   } from "react-router-dom";
 import MainLayout from "../mainLayout/MainLayout";
 import Home from "../home/Home";
+import FishAndSeafoods from "../fish&Seafoods/Fish&Seafoods";
+import SteaksFillets from "../steaksFillets/SteaksFillets";
 
 
 const router = createBrowserRouter([
@@ -14,6 +16,14 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home/>
+      },
+      {
+        path: "/fish&seafoods",
+        element: <FishAndSeafoods/>
+      },
+      {
+        path: "/steaks/fillets",
+        element: <SteaksFillets/>
       }
     ]
   },
