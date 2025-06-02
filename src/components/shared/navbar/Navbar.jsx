@@ -8,12 +8,12 @@ const Navbar = () => {
   <Link to="/fish&seafoods" className="flex items-center gap-2"><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf18d8f810.png" alt="" />fish & seafood</Link>
   <Link to="/steaks/fillets" className="flex items-center gap-2"><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf552cd4ed.png" alt="" />Steaks fillets</Link>
   <Link to="/chickenAndDuck" className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf552c6fc6.png" alt="" />chicken & Duck</Link>
-  <h2 className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf55295a87.png" alt="" />Beef & Mutton</h2>
-  <h2 className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf55288919.png" alt="" />Combo Pack</h2>
-  <h2 className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf55259813.png" alt="" />Dried Fish</h2>
-  <h2 className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf55252c9c.png" alt="" />Marinated & Cooked</h2>
-  <h2 className="flex items-center gap-2"><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf551db049.png" alt="" />Pasta Spice</h2>
-  <h2 className="flex items-center gap-2"><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf551d7bf9.png" alt="" />Fruit & Veggies</h2>
+  <Link to="/beef-&-Mutton" className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf55295a87.png" alt="" />Beef & Mutton</Link>
+  <Link to="/combo-Pack" className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf55288919.png" alt="" />Combo Pack</Link>
+  <Link to="/dried-Fish" className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf55259813.png" alt="" />Dried Fish</Link>
+  <Link to="/marinatedCooked" className="flex items-center gap-2 "><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf55252c9c.png" alt="" />Marinated & Cooked</Link>
+  <Link to="/pasteSpice" className="flex items-center gap-2"><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf551db049.png" alt="" />Pasta Spice</Link>
+  {/* <h2 className="flex items-center gap-2"><img className="h-6" src="https://api.freshtoday.com.bd/media/64edf551d7bf9.png" alt="" />Fruit & Veggies</h2> */}
   </>
 );
 
