@@ -12,6 +12,14 @@ import ComboPack from "../comboPack/ComboPack";
 import DriedFish from "../driedFish/DriedFish";
 import MarinatedCooked from "../marinatedCooked/MarinatedCooked";
 import PasteSpice from "../pasteSpice/PasteSpice";
+import Login from "../login/Login";
+import SignUp from "../signUp/SignUp";
+import PrivateRoute from "./privateRoute/PrivateRoute";
+import Dashboard from "../../Dasboard/Dashboard";
+import AdminDashboard from "../../Dasboard/AdminDashboard/AdminDashboard";
+import ManageProducts from "../../Dasboard/ContentManagement/ManageProducts ";
+import AddProduct from "../../Dasboard/ContentManagement/addProudct/AddProduct";
+import CategoryTable from "@/Dasboard/categories/Categories";
 
 
 const router = createBrowserRouter([
@@ -54,9 +62,39 @@ const router = createBrowserRouter([
       {
         path: "/pasteSpice",
         element: <PasteSpice/>
+      },
+      {
+        path: "/login",
+        element: <Login/>
+      },
+      {
+        path: "/signup",
+        element: <SignUp/>
       }
     ]
   },
+  {
+    path: "/dashboard",
+    element:<Dashboard/>,
+    children: [
+        {
+          path: 'admin-dashboard',
+          element: <AdminDashboard/>
+        },
+        {
+          path: 'manage-product',
+          element: <ManageProducts/>
+        },
+        {
+          path: "add-product",
+          element: <AddProduct/>
+        },
+        {
+          path: "categories",
+          element: <CategoryTable/>
+        }
+    ]
+  }
 ]);
 
 export default router;

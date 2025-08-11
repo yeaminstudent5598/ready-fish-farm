@@ -19,9 +19,9 @@ const Footer = () => {
                         <div className=" mb-4">
                             <a href="/">
                                 <img
-                                    src="https://api.freshtoday.com.bd/media/64e5f419a8845.png"
+                                    src="https://i.ibb.co/ksQ8xc5Q/Amer-Sadi-Logo-05.png"
                                     alt="Footer Logo"
-                                    className="mx-auto w-24"
+                                    className="mx-auto"
                                 />
                             </a>
                             <p className="mt-4">

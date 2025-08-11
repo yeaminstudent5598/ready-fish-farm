@@ -4,7 +4,7 @@ import 'swiper/css';
 
 const Banner = () => {
   return (
-    <div className="w-full px-6"> {/* Full screen height */}
+    <div className="w-full px-6 mt-24"> {/* Full screen height */}
       <Swiper className="rounded-2xl shadow-2xl "
         modules={[Autoplay]}
         spaceBetween={0}
@@ -16,26 +16,19 @@ const Banner = () => {
       >
         <SwiperSlide >
           <img
-            src="https://api.freshtoday.com.bd/media/6786ae6ddc016.jpg"
+            src="https://i.ibb.co/VnVKsQ3/Web-Bannar-Artboard-3.jpg"
             alt=""
           />
         </SwiperSlide>
         <SwiperSlide >
           <img
-            src="https://api.freshtoday.com.bd/media/6658975c0b2d6.jpg"
+            src="https://i.ibb.co/KRb2zK7/Web-Bannar-Artboard-1.jpg"
             alt=""
           />
         </SwiperSlide>
         <SwiperSlide >
           <img
-            src="https://api.freshtoday.com.bd/media/665dd9ab7d354.jpg"
-            alt=""
-            
-          />
-        </SwiperSlide>
-        <SwiperSlide >
-          <img
-            src="https://api.freshtoday.com.bd/media/665dd9643ed2b.jpg"
+            src="https://i.ibb.co/3Y566nkd/Web-Bannar-Artboard-2.jpg"
             alt=""
             
           />
