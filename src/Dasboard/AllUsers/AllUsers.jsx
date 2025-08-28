@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FaTrashAlt, FaUsers, FaEllipsisV } from "react-icons/fa";
 import Swal from "sweetalert2";
 import ReactPaginate from "react-paginate";
-import useAxiosSecure from "../../Hooks/axiosSecure";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();

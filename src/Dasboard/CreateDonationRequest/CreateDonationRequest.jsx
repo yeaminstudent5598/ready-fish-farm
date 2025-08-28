@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FaExclamationCircle, FaHeart } from "react-icons/fa";
 import useAuth from "../../Hooks/useAuth";
-import useAxiosSecure from "../../Hooks/axiosSecure";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { useQuery } from "@tanstack/react-query";
 

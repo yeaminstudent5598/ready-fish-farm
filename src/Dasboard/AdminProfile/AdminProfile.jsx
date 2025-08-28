@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FiEdit, FiSave } from "react-icons/fi";
 import Swal from "sweetalert2";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import useAxiosSecure from "../../Hooks/axiosSecure";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
 
 const AdminProfile = () => {

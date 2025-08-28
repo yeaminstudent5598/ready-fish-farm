@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { FaUserFriends, FaBoxOpen, FaShoppingCart, FaDollarSign, FaChartLine } from "react-icons/fa";
 import { LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
-import useAxiosSecure from "../../Hooks/axiosSecure";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
 
 const AdminDashboard = () => {
