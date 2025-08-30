@@ -1,292 +1,144 @@
 import { useState } from "react";
-import {
-  FaPhoneAlt,
-  FaShoppingCart,
-  FaUser,
-  FaBars,
-  FaTimes,
-  FaAngleDown,
-} from "react-icons/fa";
+import { FaShoppingCart, FaUser, FaHeart, FaBars, FaTimes, FaAngleDown } from "react-icons/fa";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAuth from "../../../Hooks/useAuth";
 import { MdDashboard } from "react-icons/md";
+import { Button } from "@/components/ui/button";
+import useCart from "@/Hooks/useCart";
+import { useWishlist } from "@/components/Providers/WishlistProvider";
 
 const Navbar = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [profileDropdown, setProfileDropdown] = useState(false);
-  const { user, logOut } = useAuth();
-  const navigate = useNavigate();
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [profileDropdown, setProfileDropdown] = useState(false);
+    
+    const { user, logOut } = useAuth();
+    const { cartCount } = useCart();
+    const { wishlistCount } = useWishlist();
+    const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      await logOut();
-      toast.success("User logged out successfully.");
-      navigate("/");
-      setProfileDropdown(false);
-    } catch (error) {
-      toast.error("Logout failed");
-    }
-  };
+    const handleLogout = async () => {
+        try {
+            await logOut();
+            toast.success("User logged out successfully.");
+            navigate("/");
+            setProfileDropdown(false);
+        } catch (error) {
+            toast.error("Logout failed");
+        }
+    };
 
-  const navLinks = [
-    ["fish&seafoods", "64edf18d8f810.png", "Fish & Seafood"],
-    ["steaks/fillets", "64edf552cd4ed.png", "Steaks & Fillets"],
-    ["chickenAndDuck", "64edf552c6fc6.png", "Chicken & Duck"],
-    ["beef-&-Mutton", "64edf55295a87.png", "Beef & Mutton"],
-    ["combo-Pack", "64edf55288919.png", "Combo Pack"],
-    ["dried-Fish", "64edf55259813.png", "Dried Fish"],
-    ["marinatedCooked", "64edf55252c9c.png", "Marinated & Cooked"],
-    ["pasteSpice", "64edf551db049.png", "Pasta & Spice"],
-  ];
+    const navLinks = [
+        { path: "/fish&seafoods", label: "Fish & Seafood" },
+        { path: "/steaks/fillets", label: "Steaks & Fillets" },
+        { path: "/chickenAndDuck", label: "Chicken & Duck" },
+        { path: "/beef-&-Mutton", label: "Beef & Mutton" },
+    ];
 
-  return (
-    <nav className="shadow-md fixed top-0 left-0 right-0 z-50 bg-white">
-      {/* ========== Desktop Navbar ========== */}
-      <div className="hidden md:flex items-center justify-between px-4 py-3 md:py-4">
-        <Link to="/">
-          <img
-            src="https://i.ibb.co/ksQ8xc5Q/Amer-Sadi-Logo-05.png"
-            alt="Logo"
-            className="h-10 md:h-14"
-          />
-        </Link>
-
-        <div className="relative">
-          <button
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="bg-[#8BC34A] text-white px-4 py-2 rounded flex items-center gap-2"
-          >
-            <FaBars />
-            BROWSE CATEGORIES
-            <FaAngleDown
-              className={`transition-transform ${dropdownOpen ? "rotate-180" : ""}`}
-            />
-          </button>
-          {dropdownOpen && (
-            <div className="absolute left-0 mt-2 w-56 bg-white border shadow-md z-50">
-              {navLinks.map(([path, , label]) => (
-                <Link
-                  key={label}
-                  to={`/${path}`}
-                  className="block px-4 py-2 hover:bg-[#f2f2f2] text-[#333] border-b last:border-0"
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <Link
-          to="/offer"
-          className="bg-[#f97316] hover:bg-orange-700 text-white px-4 py-2 rounded ml-4"
-        >
-          📢 OFFER
-        </Link>
-
-        <div className="flex-grow mx-4 max-w-xl flex border rounded">
-          <input
-            type="text"
-            placeholder="Search for products"
-            className="w-full px-4 py-2 rounded-l-md text-sm focus:outline-none"
-          />
-          <button className="px-4 text-[#40a944]">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="w-5 h-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </button>
-        </div>
-
-        <div className="flex items-center gap-4 relative">
-          {user ? (
-            <div className="relative">
-              <button
-                onClick={() => setProfileDropdown(!profileDropdown)}
-                className="focus:outline-none"
-              >
-                <img
-                  src={user?.photoURL}
-                  alt="profile"
-                  className="w-8 h-8 rounded-full border-2 border-[#f97316]"
-                />
-              </button>
-              {profileDropdown && (
-                <div className="absolute right-0 mt-2 bg-white border shadow-md rounded w-36 text-sm z-50">
-                  <NavLink
-                    to="/dashboard"
-                    onClick={() => setProfileDropdown(false)}
-                    className="block px-4 py-2 hover:bg-orange-100 flex items-center gap-2"
-                  >
-                    <MdDashboard className="text-lg" /> Dashboard
-                  </NavLink>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full px-4 py-2 text-left hover:bg-orange-100"
-                  >
-                    Logout
-                  </button>
+    return (
+        <header className="shadow-md fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-800">
+            {/* ========== Desktop Navbar ========== */}
+            <div className="hidden md:flex items-center justify-between px-6 py-3 max-w-7xl mx-auto gap-4">
+                <div className="flex items-center gap-4 flex-shrink-0">
+                    <Link to="/">
+                        <img src="https://i.ibb.co/ksQ8xc5Q/Amer-Sadi-Logo-05.png" alt="Logo" className="h-14"/>
+                    </Link>
+                    <div className="relative">
+                        <Button variant="outline" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                            <FaBars className="mr-2" /> Categories <FaAngleDown className={`ml-2 transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
+                        </Button>
+                        {dropdownOpen && (
+                            <div className="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-700 border dark:border-gray-600 rounded-md shadow-lg z-50">
+                                {navLinks.map(({ path, label }) => (
+                                    <Link key={label} to={path} onClick={() => setDropdownOpen(false)} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        {label}
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
-              )}
-            </div>
-          ) : (
-            <Link to="/login" className="flex btn items-center gap-1 text-sm">
-              <FaUser /> LOGIN / REGISTER
-            </Link>
-          )}
-          <Link to="/cart" className="relative flex items-center gap-1 text-sm">
-            <FaShoppingCart />
-          </Link>
-        </div>
-      </div>
 
-      {/* ========== Mobile Navbar ========== */}
-      <div className="flex md:hidden items-center justify-between px-4 py-2">
-        <button onClick={() => setMobileMenuOpen(true)}>
-          <FaBars className="text-xl text-[#40a944]" />
-        </button>
-        <div className="flex-grow mx-4 flex border rounded">
-          <input
-            type="text"
-            placeholder="Search"
-            className="w-full px-2 py-1 text-sm focus:outline-none"
-          />
-          <button className="px-2 text-[#40a944]">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="w-4 h-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </button>
-        </div>
-
-        <div className="flex items-center gap-3 relative">
-          <Link to="/cart">
-            <FaShoppingCart className="text-lg text-[#40a944]" />
-          </Link>
-
-          {user ? (
-            <div className="relative">
-              <button
-                onClick={() => setProfileDropdown(!profileDropdown)}
-                className="text-lg text-[#40a944] focus:outline-none"
-              >
-                <img
-                  src={user?.photoURL}
-                  alt="profile"
-                  className="w-8 h-8 rounded-full border-2 border-[#f97316]"
-                />
-              </button>
-              {profileDropdown && (
-                <div className="absolute right-0 mt-2 bg-white border shadow-md rounded w-36 text-sm z-50">
-                  <NavLink
-                    to="/dashboard"
-                    onClick={() => {
-                      setProfileDropdown(false);
-                      setMobileMenuOpen(false);
-                    }}
-                    className="block px-4 py-2 hover:bg-orange-100 flex items-center gap-2"
-                  >
-                    <MdDashboard className="text-lg" /> Dashboard
-                  </NavLink>
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      setProfileDropdown(false);
-                    }}
-                    className="block w-full px-4 py-2 text-left hover:bg-orange-100"
-                  >
-                    Logout
-                  </button>
+                <div className="flex-grow flex items-center gap-4 max-w-xl">
+                    <div className="flex-grow flex border rounded-md">
+                        <input type="text" placeholder="Search for products..." className="w-full px-4 py-2 rounded-l-md text-sm focus:outline-none dark:bg-gray-700 dark:text-white" />
+                        <button className="px-4 text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-600 rounded-r-md">Search</button>
+                    </div>
+                    <Link to="/offer">
+                        <Button className="bg-red-600 hover:bg-red-700 text-white font-semibold whitespace-nowrap">📢 OFFERS</Button>
+                    </Link>
                 </div>
-              )}
+                
+                <div className="flex items-center gap-6 text-gray-700 dark:text-gray-200">
+                    <Link to="/wishlist" className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <FaHeart className="text-xl" />
+                        {wishlistCount > 0 && <span className="absolute -top-1 -right-2 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{wishlistCount}</span>}
+                    </Link>
+                    <Link to="/cart" className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <FaShoppingCart className="text-xl" />
+                        {cartCount > 0 && <span className="absolute -top-1 -right-2 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{cartCount}</span>}
+                    </Link>
+                    <div className="h-6 w-px bg-gray-200 dark:bg-gray-600"></div>
+                    {user ? (
+                        <div className="relative">
+                            <button onClick={() => setProfileDropdown(!profileDropdown)}><img src={user.photoURL} alt="profile" className="w-10 h-10 rounded-full border-2 border-red-500"/></button>
+                            {profileDropdown && (
+                                <div className="absolute right-0 mt-2 bg-white dark:bg-gray-700 border dark:border-gray-600 shadow-lg rounded w-48 text-sm z-50">
+                                    <div className="p-3 border-b dark:border-gray-600">
+                                        <p className="font-semibold truncate">{user.displayName}</p>
+                                    </div>
+                                    <NavLink to="/dashboard" onClick={() => setProfileDropdown(false)} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 flex items-center gap-2"><MdDashboard /> Dashboard</NavLink>
+                                    <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-600">Logout</button>
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        <Link to="/login" className="font-semibold hover:text-red-600 transition-colors">Login</Link>
+                    )}
+                </div>
             </div>
-          ) : (
-            <Link
-              to="/login"
-              className="flex items-center gap-1 text-sm text-[#40a944]"
-            >
-              <FaUser /> LOGIN / REGISTER
-            </Link>
-          )}
-        </div>
-      </div>
 
-      {/* ========== Mobile Drawer ========== */}
-      {mobileMenuOpen && (
-        <>
-          <div
-            className="fixed inset-0 bg-black opacity-30 z-40"
-            onClick={() => setMobileMenuOpen(false)}
-          ></div>
-          <div className="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out">
-            <div className="flex justify-between items-center p-4 border-b">
-              <h2 className="font-bold text-[#40a944] text-lg">Menu</h2>
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-2xl"
-              >
-                <FaTimes />
-              </button>
-            </div>
-            <div className="p-4 flex flex-col gap-2 text-[#497954]">
-              {navLinks.map(([path, , label]) => (
-                <Link
-                  to={`/${path}`}
-                  key={label}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 hover:text-[#40a944]"
-                >
-                  {label}
+            {/* ========== Mobile Navbar & Drawer ========== */}
+            <div className="flex md:hidden items-center justify-between px-4 py-3">
+                <button onClick={() => setMobileMenuOpen(true)}>
+                    <FaBars className="text-2xl text-gray-700" />
+                </button>
+                <Link to="/">
+                    <img src="https://i.ibb.co/ksQ8xc5Q/Amer-Sadi-Logo-05.png" alt="Logo" className="h-10"/>
                 </Link>
-              ))}
-              {user && (
+                <div className="flex items-center gap-4">
+                    <Link to="/cart" className="relative"><FaShoppingCart className="text-xl" />{cartCount > 0 && <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center">{cartCount}</span>}</Link>
+                </div>
+            </div>
+            
+            {mobileMenuOpen && (
                 <>
-                  <NavLink
-                    to="/dashboard"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-2 text-sm text-[#497954] hover:text-orange-600"
-                  >
-                    <MdDashboard className="text-lg" /> Dashboard
-                  </NavLink>
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="text-left text-sm text-red-600 hover:underline mt-2"
-                  >
-                    Logout
-                  </button>
+                    <div className="fixed inset-0 bg-black opacity-50 z-40" onClick={() => setMobileMenuOpen(false)}></div>
+                    <div className="fixed top-0 left-0 w-72 h-full bg-white dark:bg-gray-800 shadow-lg z-50 transform transition-transform duration-300">
+                        <div className="flex justify-between items-center p-4 border-b">
+                            <h2 className="font-bold text-lg">Menu</h2>
+                            <button onClick={() => setMobileMenuOpen(false)}><FaTimes /></button>
+                        </div>
+                        <div className="p-4 flex flex-col gap-2">
+                            {navLinks.map(({ path, label }) => (
+                                <Link to={path} key={label} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-red-600">{label}</Link>
+                            ))}
+                            <div className="border-t my-4"></div>
+                            {user ? (
+                                <>
+                                    <NavLink to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="py-2 flex items-center gap-2"><MdDashboard /> Dashboard</NavLink>
+                                    <button onClick={handleLogout} className="text-left py-2 text-red-600 font-semibold">Logout</button>
+                                </>
+                            ) : (
+                                <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="py-2 flex items-center gap-2"><FaUser /> Login / Register</Link>
+                            )}
+                        </div>
+                    </div>
                 </>
-              )}
-            </div>
-          </div>
-        </>
-      )}
-    </nav>
-  );
+            )}
+        </header>
+    );
 };
 
 export default Navbar;
