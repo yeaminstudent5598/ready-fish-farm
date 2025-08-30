@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import toast from 'react-hot-toast';
 
 // ✅ নতুন API এন্ডপয়েন্ট ব্যবহার করা হচ্ছে
 const API_URL = "http://localhost:9000/api/products";
@@ -90,36 +91,48 @@ const Deals = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {deals.slice(0, 5).map((product) => (
-            <div key={product._id} className="group relative flex flex-col rounded-xl border bg-white dark:bg-gray-800 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-              <Link to={`/product/${product.slug}`} className="flex-grow">
-                <div className="relative">
-                    <span className="absolute top-3 left-3 z-10 bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-full">
-                        -{calculateDiscount(product.pricing.regular, product.pricing.discount)}%
-                    </span>
-                    <div className="aspect-square w-full overflow-hidden">
-                        <img
-                            src={product.images?.[0] || 'https://placehold.co/400x400/EBF5FF/7A7A7A?text=No+Image'}
-                            alt={product.name}
-                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                    </div>
-                </div>
-                <div className="p-4 flex-grow flex flex-col">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{product.category?.name || "Uncategorized"}</p>
-                    <h3 className="mt-1 font-semibold text-gray-800 dark:text-white truncate group-hover:text-red-600">{product.name}</h3>
-                    <div className="mt-2 text-sm">
-                        <p className="line-through text-gray-400">BDT {product.pricing.regular}</p>
-                        <p className="text-red-600 dark:text-red-400 font-bold text-lg">BDT {product.pricing.discount}</p>
-                    </div>
-                </div>
-              </Link>
-              <div className="p-4 pt-0">
-                {/* Add to Cart button logic needs to be implemented */}
-                <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
-                    <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
-                </Button>
-              </div>
-            </div>
+// deals.slice(0, 5).map((product) => ( ... )) এর ভেতরের অংশ
+
+<div key={product._id} className="group relative flex flex-col rounded-xl border bg-white dark:bg-gray-800 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+  {/* Card-এ ক্লিক করলে প্রোডাক্ট ডিটেইলস পেজে যাবে */}
+  <Link to={`/product/${product.slug}`} className="absolute inset-0 z-10" aria-label={`View ${product.name}`}></Link>
+  
+  <div className="relative">
+    <span className="absolute top-3 left-3 z-20 bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-full">
+        -{calculateDiscount(product.pricing.regular, product.pricing.discount)}%
+    </span>
+    <div className="aspect-square w-full overflow-hidden">
+        <img
+            src={product.images?.[0] || 'https://placehold.co/400x400/EBF5FF/7A7A7A?text=No+Image'}
+            alt={product.name}
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+    </div>
+  </div>
+  
+  <div className="p-4 flex-grow flex flex-col">
+    <p className="text-sm text-gray-500 dark:text-gray-400">{product.category?.name || "Uncategorized"}</p>
+    <h3 className="mt-1 font-semibold text-gray-800 dark:text-white truncate group-hover:text-red-600">{product.name}</h3>
+    <div className="mt-auto pt-2 text-sm">
+        <p className="line-through text-gray-400">BDT {product.pricing.regular}</p>
+        <p className="text-red-600 dark:text-red-400 font-bold text-lg">BDT {product.pricing.discount}</p>
+    </div>
+  </div>
+  
+  <div className="p-4 pt-0 z-20">
+    <Button 
+        className="w-full bg-red-500 hover:bg-red-600 text-white"
+        onClick={(e) => {
+            e.preventDefault(); // লিঙ্কে ক্লিক হওয়া থেকে বিরত রাখবে
+            // ধাপ ৪-এ আমরা এখানে কার্টে যোগ করার ফাংশন যোগ করব
+            console.log(`${product.name} added to cart!`);
+            toast.success(`${product.name} added to cart!`);
+        }}
+    >
+        <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
+    </Button>
+  </div>
+</div>
           ))}
         </div>
       </div>

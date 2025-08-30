@@ -4,23 +4,23 @@ import { useState } from 'react';
 import useAxiosPublic from '../../Hooks/useAxiosPublic';
 import useAuth from '../../Hooks/useAuth';
 import { toast } from 'react-hot-toast';
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Password toggle icons
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const SignUp = () => {
     const navigate = useNavigate();
     const axiosPublic = useAxiosPublic();
     const { createUser, updateUserProfile } = useAuth();
     const [imageLoading, setImageLoading] = useState(false);
-    const [showPassword, setShowPassword] = useState(false); // State for password visibility
+    const [showPassword, setShowPassword] = useState(false);
 
     const {
         register,
         handleSubmit,
-        watch, // To watch the value of the password field
+        watch,
         formState: { errors },
     } = useForm();
 
-    const password = watch("password", ""); // Watching the password field
+    const password = watch("password", "");
 
     const imageHostKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
     const imageHostingApi = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
@@ -37,15 +37,17 @@ const SignUp = () => {
             const imgURL = res.data.data.display_url;
 
             // 2. Create user in Firebase
-            await createUser(data.email, data.password);
+            const result = await createUser(data.email, data.password);
 
             // 3. Update Firebase profile
             await updateUserProfile(data.name, imgURL);
 
-            // 4. Create user entry in your database
+            // 4. Create user entry in your database (with UID and Phone)
             const userInfo = {
+                uid: result.user.uid, // Firebase থেকে পাওয়া ইউনিক আইডি
                 name: data.name,
                 email: data.email,
+                phone: data.phone, // নতুন ফোন নম্বর
                 image: imgURL,
                 role: 'user',
             };
@@ -57,7 +59,6 @@ const SignUp = () => {
 
         } catch (error) {
             console.error(error);
-            // Better error handling for specific cases
             if (error.code === 'auth/email-already-in-use') {
                 toast.error('This email is already registered.');
             } else {
@@ -96,6 +97,24 @@ const SignUp = () => {
                         {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
                     </div>
 
+                    {/* ✅ ফোন নম্বর ফিল্ড যোগ করা হয়েছে */}
+                    <div>
+                        <label className="block text-sm font-semibold mb-1 text-gray-700">Phone Number</label>
+                        <input
+                            {...register('phone', { 
+                                required: 'Phone number is required',
+                                pattern: {
+                                    value: /^(?:\+88|88)?(01[3-9]\d{8})$/,
+                                    message: 'Please enter a valid Bangladeshi number'
+                                }
+                            })}
+                            type="tel"
+                            placeholder="01xxxxxxxxx"
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#f97316]"
+                        />
+                        {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
+                    </div>
+
                     <div className="relative">
                         <label className="block text-sm font-semibold mb-1 text-gray-700">Password</label>
                         <input
@@ -109,7 +128,7 @@ const SignUp = () => {
                             })}
                             type={showPassword ? "text" : "password"}
                             placeholder="••••••••"
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#f97316]"
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2"
                         />
                         <span onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-9 cursor-pointer">
                             {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -126,7 +145,7 @@ const SignUp = () => {
                             })}
                             type="password"
                             placeholder="••••••••"
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#f97316]"
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2"
                         />
                         {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>}
                     </div>
