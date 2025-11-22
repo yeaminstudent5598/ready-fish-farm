@@ -1,8 +1,17 @@
-import React, { createContext, useEffect, useState } from 'react';
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
+import { 
+    getAuth, 
+    onAuthStateChanged, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    signOut, 
+    updateProfile, 
+    GoogleAuthProvider, 
+    signInWithPopup 
+} from 'firebase/auth';
 import { app } from '../firebase/Firebase';
 import useAxiosPublic from '@/Hooks/useAxiosPublic';
-import { AuthContext } from '@/Hooks/useAuth';
+import { AuthContext } from '@/Hooks/useAuth'; 
 
 const auth = getAuth(app);
 
@@ -41,19 +50,39 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
+            // console.log("👤 Auth State Changed:", currentUser?.email);
+
             if (currentUser) {
+                // ইউজার পাওয়া গেছে, এখন টোকেন আনতে হবে
                 const userInfo = { email: currentUser.email };
+                
                 axiosPublic.post('/jwt', userInfo)
                     .then((res) => {
                         if (res.data.token) {
+                            // ১. আগে টোকেন সেভ করুন
                             localStorage.setItem('access-token', res.data.token);
-                            setLoading(false);
+                            // console.log("✅ Token Saved for:", currentUser.email);
+                            
+                            // ২. তারপর ইউজার সেট করুন (যাতে অন্য কম্পোনেন্টরা টোকেন পায়)
+                            setUser(currentUser);
+                        } else {
+                            // টোকেন না আসলে ফোর্স লগআউট
+                            // console.error("⚠️ No token received!");
+                            localStorage.removeItem('access-token');
+                            setUser(null);
                         }
+                        setLoading(false);
                     })
-                    .catch(() => setLoading(false));
+                    .catch((error) => {
+                        // console.error("❌ JWT Error:", error);
+                        localStorage.removeItem('access-token');
+                        setUser(null);
+                        setLoading(false);
+                    });
             } else {
+                // ইউজার লগআউট করলে টোকেন মুছে ফেলা
                 localStorage.removeItem('access-token');
+                setUser(null);
                 setLoading(false);
             }
         });
@@ -78,4 +107,4 @@ const AuthProvider = ({ children }) => {
     );
 };
 
-export default AuthProvider;
+export default AuthProvider;    

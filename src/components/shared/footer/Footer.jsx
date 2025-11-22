@@ -16,12 +16,12 @@ const Footer = () => {
                 <div className="grid md:grid-cols-5 gap-6">
                     {/* Logo Section */}
                     <div className="text-center">
-                        <div className=" mb-4">
+                        <div className="mb-2">
                             <a href="/">
                                 <img
-                                    src="https://i.ibb.co/ksQ8xc5Q/Amer-Sadi-Logo-05.png"
+                                    src="/pixel-&-Code-eco.png"
                                     alt="Footer Logo"
-                                    className="mx-auto"
+                                    className="mx-auto w-30 h-30"
                                 />
                             </a>
                             <p className="mt-4">

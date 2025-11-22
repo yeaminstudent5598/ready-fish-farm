@@ -23,7 +23,6 @@ import PrivateRoute from "./privateRoute/PrivateRoute";
 import AdminRoute from "./privateRoute/AdminRoute";
 import ProductDetail from "../home/dealsOfTheDay/Products/ProductDetail";
 import AuthProvider from "../authProvider/Authprovider";
-// ❌ CartProvider ইম্পোর্ট এখান থেকে মুছে ফেলা হয়েছে
 import { WishlistProvider } from "../Providers/WishlistProvider";
 
 import CartPage from "../Pages/CartPage";
@@ -88,11 +87,9 @@ const router = createBrowserRouter([
     element: (
       <AuthProvider>
         <WishlistProvider>
-          {/* ❌ CartProvider এখান থেকেও মুছে ফেলা হয়েছে */}
             <PrivateRoute>
               <Dashboard />
             </PrivateRoute>
-          {/* ❌ */}
         </WishlistProvider>
       </AuthProvider>
     ),

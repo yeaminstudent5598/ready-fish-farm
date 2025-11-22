@@ -69,7 +69,7 @@ const Navbar = () => {
                 {/* 1. Left Side: Logo & Categories Dropdown */}
                 <div className="flex items-center gap-4 xl:gap-6 flex-shrink-0">
                     <Link to="/">
-                        <img src="https://i.ibb.co/ksQ8xc5Q/Amer-Sadi-Logo-05.png" alt="Logo" className="h-10 xl:h-12 object-contain"/>
+                        <img src="/pixel-&-Code-eco.png" alt="Logo" className="h-16 xl:h-16 object-contain"/>
                     </Link>
                     
                     <div className="relative">
@@ -222,7 +222,7 @@ const Navbar = () => {
             {/* ========== Mobile Menu (Updated) ========== */}
             <div className="flex lg:hidden items-center justify-between px-4 py-3 bg-white">
                 <button onClick={() => setMobileMenuOpen(true)} className="p-2 hover:bg-gray-100 rounded-md"><FaBars className="text-xl text-gray-700" /></button>
-                <Link to="/"><img src="https://i.ibb.co/ksQ8xc5Q/Amer-Sadi-Logo-05.png" alt="Logo" className="h-8 object-contain"/></Link>
+                <Link to="/"><img src="/pixel-&-Code-eco.png" alt="Logo" className="h-8 object-contain"/></Link>
                 <Link to="/cart" className="relative p-2 hover:bg-gray-100 rounded-full">
                     <FaShoppingCart className="text-xl text-gray-700" />
                     {cartCount > 0 && <span className="absolute top-0 right-0 bg-[#f97316] text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">{cartCount}</span>}
