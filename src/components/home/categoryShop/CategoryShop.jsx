@@ -1,40 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosPublic from '@/Hooks/useAxiosPublic';
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronUp, Layers } from 'lucide-react';
 
 const CategoryShop = () => {
   const axiosPublic = useAxiosPublic();
-  const [showAll, setShowAll] = useState(false);
-
-  // প্রাথমিক অবস্থায় কয়টি ক্যাটাগরি দেখাবে (ডেস্কটপে ১২টি, মোবাইলে ৬টি হলে ভালো হয়)
-  const INITIAL_LIMIT = 12; 
 
   const { data: categories = [], isLoading, error } = useQuery({
     queryKey: ['shop-categories'],
     queryFn: async () => {
       const res = await axiosPublic.get('/api/categories');
-      // শুধুমাত্র যেসব ক্যাটাগরি ন্যাভবারে আছে অথবা সব ক্যাটাগরি (আপনার ইচ্ছা অনুযায়ী)
-      // এখানে সব ক্যাটাগরি আনা হচ্ছে
       return res.data;
     }
   });
 
-  // কোন ক্যাটাগরিগুলো রেন্ডার হবে
-  const displayedCategories = showAll ? categories : categories.slice(0, INITIAL_LIMIT);
-
   if (isLoading) {
       return (
-        <div className="px-4 py-16 max-w-7xl mx-auto">
-            <div className="flex justify-center mb-10"><Skeleton className="h-10 w-64 rounded-full" /></div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
-                {[...Array(6)].map((_, i) => (
-                    <div key={i} className="flex flex-col items-center gap-3">
-                        <Skeleton className="w-[120px] h-[120px] rounded-full" />
+        // Banner er same alignment: w-full max-w-[1400px] mx-auto px-4
+        <div className="w-full max-w-[1400px] mx-auto px-4 py-8">
+            <div className="flex overflow-x-auto justify-start gap-6 md:gap-8 pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                {[...Array(8)].map((_, i) => (
+                    <div key={i} className="flex-shrink-0 flex flex-col items-center gap-4 w-[140px]">
+                        <Skeleton className="w-28 h-28 md:w-32 md:h-32 rounded-full" />
                         <Skeleton className="h-4 w-20" />
                     </div>
                 ))}
@@ -43,39 +32,29 @@ const CategoryShop = () => {
       );
   }
 
-  if (error) return null; // এরর হলে সেকশন হাইড থাকবে
+  if (error) return null; 
 
   return (
-    <section className="px-4 py-16 bg-white relative overflow-hidden">
-      {/* Background Decor (Optional) */}
+    // Banner er same alignment: w-full max-w-[1400px] mx-auto px-4
+    <section className="w-full max-w-[1400px] mx-auto px-4 py-8 bg-white relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
 
-      <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
-        <div className="text-center mb-12 space-y-2">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center justify-center gap-3">
-                <Layers className="text-[#f97316] h-8 w-8" />
-                Shop by Category
-            </h2>
-            <p className="text-gray-500">Find everything you need in one place</p>
-            <div className="w-24 h-1 bg-[#f97316] mx-auto rounded-full mt-4"></div>
-        </div>
-
-        {/* Categories Grid with Animation */}
+      <div className="w-full">
+        {/* Horizontal Scrollable Categories List */}
         <motion.div 
             layout
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8 justify-items-center"
+            className="flex overflow-x-auto justify-start gap-6 md:gap-8 pb-4 px-1 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
             <AnimatePresence>
-                {displayedCategories.map((category, index) => (
+                {categories.map((category, index) => (
                     <motion.div
                         layout
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
-                        transition={{ duration: 0.3, delay: index * 0.05 }} // Staggered animation
+                        transition={{ duration: 0.3, delay: index * 0.05 }} 
                         key={category._id}
-                        className="w-full flex justify-center"
+                        className="flex-shrink-0 flex justify-center snap-start"
                     >
                         <Link
                             to={`/category/${category.slug}`}
@@ -91,7 +70,6 @@ const CategoryShop = () => {
                                         onError={(e) => { e.target.src = "https://placehold.co/200x200/f3f4f6/9ca3af?text=IMG"; }}
                                     />
                                 </div>
-                                {/* Ping Animation Effect on Hover */}
                                 <span className="absolute top-0 left-0 w-full h-full rounded-full bg-[#f97316] opacity-0 group-hover:animate-ping group-hover:opacity-10 transition-all"></span>
                             </div>
                             
@@ -104,24 +82,6 @@ const CategoryShop = () => {
                 ))}
             </AnimatePresence>
         </motion.div>
-
-        {/* View All Button */}
-        {categories.length > INITIAL_LIMIT && (
-            <div className="flex justify-center mt-12">
-                <Button
-                    variant="outline"
-                    size="lg"
-                    onClick={() => setShowAll(!showAll)}
-                    className="group border-gray-300 text-gray-600 hover:text-[#f97316] hover:border-[#f97316] hover:bg-orange-50 px-8 rounded-full transition-all duration-300"
-                >
-                    {showAll ? (
-                        <>Show Less <ChevronUp className="ml-2 h-4 w-4 group-hover:-translate-y-1 transition-transform" /></>
-                    ) : (
-                        <>View All Categories <ChevronDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" /></>
-                    )}
-                </Button>
-            </div>
-        )}
       </div>
     </section>
   );

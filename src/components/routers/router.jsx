@@ -29,10 +29,9 @@ import CartPage from "../Pages/CartPage";
 import WishlistPage from "../Pages/WishlistPage";
 import CheckoutPage from "../Pages/CheckoutPage";
 import Deals from "../home/dealsOfTheDay/Deals";
-import FishAndSeafoods from "../fish&Seafoods/Fish&Seafoods";
+// ✅ ফিক্সড ইমপোর্ট (অবশ্যই ফোল্ডার ও ফাইলের নাম এই অনুযায়ী হতে হবে)
 import SteaksFillets from "../steaksFillets/SteaksFillets";
-import ChickenAndDuck from "../chicken&Duck/ChickenAndDuck";
-import BeefMutton from "../beef&Mutton/Beef&Mutton";
+
 import ErrorPage from "../shared/ErrorPage";
 import UserHome from "@/Dasboard/UserDashboard/UserHome";
 import CategoryProductsPage from "../Pages/CategoryProductsPage";
@@ -47,9 +46,7 @@ const router = createBrowserRouter([
     element: (
       <AuthProvider>
         <WishlistProvider>
-          {/* ❌ CartProvider এখান থেকে মুছে ফেলা হয়েছে */}
             <MainLayout />
-          {/* ❌ */}
         </WishlistProvider>
       </AuthProvider>
     ),
@@ -59,15 +56,13 @@ const router = createBrowserRouter([
       { path: "/signup", element: <SignUp /> },
       { path: "/product/:slug", element: <ProductDetail /> },
       { path: "/deals", element: <Deals/>},
-      { path: "/fish&seafoods", element: <FishAndSeafoods/>},
-      { path: "/category/fish-and-seafood", element: <FishAndSeafoods/>},
+      
+      // আপডেটেড পাথ (URL এ & রাখা যাবে, কিন্তু ফাইলে না)
+      
       { path: "/steaks/fillets", element: <SteaksFillets/>},
-      { path: "/category/steaks-&-fillets", element: <SteaksFillets/>},
-      { path: "/chickenAndDuck", element: <ChickenAndDuck/>},
-      { path: "/category/chicken-&-duck", element: <ChickenAndDuck/>},
-      { path: "/beef-&-Mutton", element: <BeefMutton/>},
-      { path: "/category/beef-&-mutton", element: <BeefMutton/>},
-      { path: "/category/combo-pack", element: <BeefMutton/>},
+      
+      
+      
       { 
         path: "/category/:slug", 
         element: <CategoryProductsPage /> 
@@ -94,18 +89,13 @@ const router = createBrowserRouter([
       </AuthProvider>
     ),
     children: [
-      // Admin Only Routes
       { path: 'admin-home', element: <AdminRoute><AdminDashboard /></AdminRoute> },
       { path: 'manage-product', element: <AdminRoute><ManageProducts /></AdminRoute> },
       { path: "add-product", element: <AdminRoute><AddProduct /></AdminRoute> },
       { path: "orders", element: <AdminRoute><ManageOrders /></AdminRoute> },
       { path: "users", element: <AdminRoute><ManageUsers /></AdminRoute> },
       { path: "categories", element: <AdminRoute><ManageCategories /></AdminRoute> },
-      { 
-        path: "edit-product/:slug", 
-        element: <AdminRoute><EditProduct /></AdminRoute> 
-      },
-      // User Routes
+      { path: "edit-product/:slug", element: <AdminRoute><EditProduct /></AdminRoute> },
       { path: "user-home", element: <UserHome/>},
       { path: "my-profile", element: <MyProfilePage/>},
       { path: "my-orders", element: <MyProfilePage/>}, 

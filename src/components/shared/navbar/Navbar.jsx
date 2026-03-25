@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaShoppingCart, FaUser, FaHeart, FaBars, FaTimes, FaAngleDown } from "react-icons/fa";
+import { FaShoppingCart, FaUser, FaHeart, FaBars, FaTimes, FaAngleDown, FaHome, FaFire, FaHistory, FaSearch } from "react-icons/fa";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAuth from "../../../Hooks/useAuth";
@@ -18,6 +18,7 @@ const Navbar = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [profileDropdown, setProfileDropdown] = useState(false);
     const [searchTerm, setSearchTerm] = useState(""); 
+    const [showSearch, setShowSearch] = useState(false);
     
     const { user, logOut } = useAuth();
     const { cartItems } = useCart();
@@ -40,6 +41,7 @@ const Navbar = () => {
         if (searchTerm.trim()) {
             navigate(`/search?q=${searchTerm}`); 
             setSearchTerm(""); 
+            setShowSearch(false);
         }
     };
 
@@ -62,22 +64,12 @@ const Navbar = () => {
 
     return (
         <>
-            {/* FIX: Added explicit height h-[80px] to header to stop it from growing too much. 
-               Z-index keeps it on top. 
-            */}
-            <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 h-[70px] lg:h-[85px] flex items-center transition-all duration-300">
-                
-                {/* ========== Desktop Navbar ========== */}
-                <div className="hidden lg:flex items-center justify-between px-4 max-w-[1400px] mx-auto w-full h-full">
-                    
-                    {/* 1. Left Side: Logo & Categories */}
+            {/* Desktop Navbar */}
+            <header className="hidden lg:block fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 h-[70px] lg:h-[85px]">
+                <div className="flex items-center justify-between px-4 max-w-[1400px] mx-auto w-full h-full">
+                    {/* Left Side: Logo & Categories */}
                     <div className="flex items-center gap-6 h-full">
                         <Link to="/" className="flex items-center h-full">
-                            {/* LOGO FIX: 
-                               - h-full with max-height restriction so it fits nicely.
-                               - w-auto allows it to be wide without stretching.
-                               - object-contain keeps aspect ratio.
-                            */}
                             <img 
                                 src="/pixel-&-Code-eco.png" 
                                 alt="Logo" 
@@ -94,7 +86,6 @@ const Navbar = () => {
                                 <FaBars className="text-gray-500" /> Categories <FaAngleDown className={`text-xs transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} />
                             </Button>
                             
-                            {/* Categories Dropdown */}
                             {dropdownOpen && (
                                 <div className="absolute top-full left-0 mt-4 w-64 bg-white border border-gray-100 rounded-lg shadow-2xl z-50 max-h-[400px] overflow-y-auto py-2 animate-in fade-in zoom-in-95 duration-200">
                                     {isCatLoading ? (
@@ -121,7 +112,7 @@ const Navbar = () => {
                         </div>
                     </div>
 
-                    {/* 2. Middle: Nav Links */}
+                    {/* Middle: Nav Links */}
                     <nav className="hidden xl:flex items-center gap-2 mx-4">
                         {categories.slice(0, 3).map((cat) => (
                             <NavLink 
@@ -140,7 +131,7 @@ const Navbar = () => {
                         ))}
                     </nav>
 
-                    {/* 3. Right Side: Search & Actions */}
+                    {/* Right Side: Search & Actions */}
                     <div className="flex-grow flex justify-end items-center gap-4 max-w-2xl">
                          <div className="relative group w-full max-w-md">
                             <input 
@@ -226,93 +217,115 @@ const Navbar = () => {
                         </div>
                     </div>
                 </div>
-
-                {/* ========== Mobile Navbar Header ========== */}
-                <div className="flex lg:hidden items-center justify-between px-4 w-full h-full relative z-50">
-                    <button onClick={() => setMobileMenuOpen(true)} className="p-2 hover:bg-gray-100 rounded-md active:scale-95 transition-transform">
-                        <FaBars className="text-2xl text-gray-700" />
-                    </button>
-                    
-                    <Link to="/" className="flex-grow flex justify-center h-full py-2">
-                        {/* Mobile Logo Size - Optimized to fill height */}
-                        <img src="/pixel-&-Code-eco.png" alt="Logo" className="h-full w-auto object-contain"/>
-                    </Link>
-                    
-                    <Link to="/cart" className="relative p-2 hover:bg-gray-100 rounded-full">
-                        <FaShoppingCart className="text-2xl text-gray-700" />
-                        {cartCount > 0 && <span className="absolute top-0 right-0 bg-[#f97316] text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center border-2 border-white">{cartCount}</span>}
-                    </Link>
-                </div>
             </header>
 
-            {/* ========== Mobile Menu Overlay & Sidebar (Z-Index 99999) ========== */}
+            {/* Mobile Top Header */}
+            <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-100 h-14 flex items-center justify-between px-3">
+                <Link to="/" className="flex-1 flex justify-start h-full py-1">
+                    <img src="/pixel-&-Code-eco.png" alt="Logo" className="h-full w-auto object-contain"/>
+                </Link>
+                
+                <button 
+                    onClick={() => setShowSearch(!showSearch)}
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                    <FaSearch className="text-lg text-gray-700" />
+                </button>
+            </div>
+
+            {/* Mobile Search Bar - Collapsible */}
+            {showSearch && (
+                <div className="lg:hidden fixed top-14 left-0 right-0 z-40 bg-white border-b border-gray-100 p-3">
+                    <div className="relative">
+                        <input 
+                            type="text" 
+                            placeholder="Search products..." 
+                            className="w-full pl-4 pr-10 py-2.5 rounded-lg border border-gray-200 bg-gray-50 focus:bg-white focus:border-[#f97316] outline-none text-sm font-medium" 
+                            value={searchTerm} 
+                            onChange={(e) => setSearchTerm(e.target.value)} 
+                            onKeyDown={handleKeyDown}
+                            autoFocus
+                        />
+                        <button onClick={handleSearch} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#f97316] p-1">
+                            <Search className="w-5 h-5"/>
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Mobile Bottom Navigation - App Style */}
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-100 h-16">
+                <div className="flex items-center justify-between h-full px-2">
+                    
+                    {/* Home */}
+                    <Link to="/" className="flex-1 flex flex-col items-center justify-center gap-1 py-2 hover:bg-orange-50 rounded-lg transition-colors group">
+                        <FaHome className="text-2xl text-gray-600 group-hover:text-[#f97316] transition-colors" />
+                        <span className="text-[10px] font-bold text-gray-600 group-hover:text-[#f97316] transition-colors">Home</span>
+                    </Link>
+
+                    {/* Categories */}
+                    <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="flex-1 flex flex-col items-center justify-center gap-1 py-2 hover:bg-orange-50 rounded-lg transition-colors group">
+                        <FaBars className="text-2xl text-gray-600 group-hover:text-[#f97316] transition-colors" />
+                        <span className="text-[10px] font-bold text-gray-600 group-hover:text-[#f97316] transition-colors">Shop</span>
+                    </button>
+
+                    {/* Deals */}
+                    <Link to="/deals" className="flex-1 flex flex-col items-center justify-center gap-1 py-2 hover:bg-orange-50 rounded-lg transition-colors group">
+                        <FaFire className="text-2xl text-red-600 group-hover:text-red-700 transition-colors" />
+                        <span className="text-[10px] font-bold text-gray-600 group-hover:text-[#f97316] transition-colors">Deals</span>
+                    </Link>
+
+                    {/* Wishlist */}
+                    <Link to="/wishlist" className="flex-1 flex flex-col items-center justify-center gap-1 py-2 hover:bg-orange-50 rounded-lg transition-colors group relative">
+                        <FaHeart className="text-2xl text-gray-600 group-hover:text-red-500 transition-colors" />
+                        {wishlistCount > 0 && <span className="absolute top-1 right-1 bg-red-500 text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center border border-white">{wishlistCount}</span>}
+                        <span className="text-[10px] font-bold text-gray-600 group-hover:text-[#f97316] transition-colors">Saved</span>
+                    </Link>
+
+                    {/* Cart */}
+                    <Link to="/cart" className="flex-1 flex flex-col items-center justify-center gap-1 py-2 hover:bg-orange-50 rounded-lg transition-colors group relative">
+                        <FaShoppingCart className="text-2xl text-gray-600 group-hover:text-[#f97316] transition-colors" />
+                        {cartCount > 0 && <span className="absolute top-1 right-1 bg-[#f97316] text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center border border-white">{cartCount}</span>}
+                        <span className="text-[10px] font-bold text-gray-600 group-hover:text-[#f97316] transition-colors">Cart</span>
+                    </Link>
+
+                    {/* Account */}
+                    {user ? (
+                        <div className="flex-1 flex flex-col items-center justify-center gap-1 py-2 hover:bg-orange-50 rounded-lg transition-colors group cursor-pointer">
+                            <img src={user.photoURL} alt="profile" className="w-7 h-7 rounded-full object-cover border-2 border-gray-300 group-hover:border-[#f97316] transition-colors" />
+                            <span className="text-[10px] font-bold text-gray-600 group-hover:text-[#f97316] transition-colors">Account</span>
+                        </div>
+                    ) : (
+                        <Link to="/login" className="flex-1 flex flex-col items-center justify-center gap-1 py-2 hover:bg-orange-50 rounded-lg transition-colors group">
+                            <FaUser className="text-2xl text-gray-600 group-hover:text-[#f97316] transition-colors" />
+                            <span className="text-[10px] font-bold text-gray-600 group-hover:text-[#f97316] transition-colors">Login</span>
+                        </Link>
+                    )}
+                </div>
+            </div>
+
+            {/* Mobile Category Menu Overlay */}
             {mobileMenuOpen && (
-                <div className="fixed inset-0 z-[99999] flex justify-start">
+                <div className="fixed inset-0 z-[99999] flex justify-start pt-14">
                     <div 
                         className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" 
                         onClick={() => setMobileMenuOpen(false)}
                     ></div>
                     
-                    <div className="relative bg-white w-[85%] max-w-sm h-full shadow-2xl transform transition-transform duration-300 ease-out flex flex-col">
-                        <div className="flex justify-between items-center p-4 border-b shrink-0 bg-gray-50">
-                            <h2 className="font-bold text-lg text-gray-800">Menu</h2>
-                            <button onClick={() => setMobileMenuOpen(false)} className="p-2 hover:bg-red-100 text-gray-500 hover:text-red-600 rounded-full transition-colors">
-                                <FaTimes className="text-xl" />
-                            </button>
-                        </div>
-                        
-                        <div className="flex-1 overflow-y-auto p-4 space-y-6">
-                             <div className="relative">
-                                <input 
-                                    type="text" 
-                                    placeholder="Search..." 
-                                    className="w-full pl-4 pr-10 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-[#f97316] outline-none text-sm" 
-                                    value={searchTerm} 
-                                    onChange={(e) => setSearchTerm(e.target.value)} 
-                                    onKeyDown={handleKeyDown}
-                                />
-                                <button onClick={() => { handleSearch(); setMobileMenuOpen(false); }} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#f97316] p-2">
-                                    <Search className="w-5 h-5"/>
-                                </button>
-                            </div>
-
-                            <div className="space-y-1">
-                                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-2">Categories</p>
-                                {categories.map((cat) => (
-                                    <Link 
-                                        key={cat._id} 
-                                        to={`/category/${cat.slug}`} 
-                                        onClick={() => setMobileMenuOpen(false)} 
-                                        className="block py-3 px-3 rounded-lg text-gray-700 hover:bg-orange-50 hover:text-[#f97316] text-base font-medium transition-colors"
-                                    >
-                                        {cat.name}
-                                    </Link>
-                                ))}
-                            </div>
-                            
-                            <div className="border-t border-gray-100 pt-6">
-                                {user ? (
-                                    <>
-                                        <div className="flex items-center gap-3 mb-6 px-3 bg-gray-50 p-4 rounded-xl">
-                                            <img src={user.photoURL} alt="user" className="w-12 h-12 rounded-full border-2 border-white shadow-sm object-cover"/>
-                                            <div className="overflow-hidden">
-                                                <p className="font-bold text-gray-800 truncate">{user.displayName}</p>
-                                                <p className="text-xs text-gray-500 truncate">{user.email}</p>
-                                            </div>
-                                        </div>
-                                        <Link to={isAdmin ? "/dashboard/admin-home" : "/dashboard/user-home"} onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 py-3 px-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium mb-2">
-                                            <MdDashboard className="text-xl text-gray-500"/> Dashboard
-                                        </Link>
-                                        <button onClick={handleLogout} className="w-full flex items-center gap-3 py-3 px-3 rounded-lg text-red-600 hover:bg-red-50 font-medium text-left">
-                                            <FaUser className="text-xl"/> Sign Out
-                                        </button>
-                                    </>
-                                ) : (
-                                    <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="flex justify-center items-center w-full py-3 bg-[#f97316] text-white rounded-lg font-bold shadow-lg shadow-orange-200 hover:bg-orange-700 transition-colors">
-                                        Login / Register
-                                    </Link>
-                                )}
-                            </div>
+                    <div className="relative bg-white w-72 h-[calc(100vh-56px-64px)] shadow-2xl overflow-y-auto">
+                        <div className="p-4 space-y-2">
+                            <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3 px-1">Categories</p>
+                            {categories.map((cat) => (
+                                <Link 
+                                    key={cat._id} 
+                                    to={`/category/${cat.slug}`} 
+                                    onClick={() => setMobileMenuOpen(false)} 
+                                    className="flex items-center gap-3 py-3 px-3 rounded-lg text-gray-700 hover:bg-orange-50 hover:text-[#f97316] font-medium transition-colors active:scale-95"
+                                >
+                                    <span className="text-lg">📦</span>
+                                    {cat.name}
+                                </Link>
+                            ))}
                         </div>
                     </div>
                 </div>
